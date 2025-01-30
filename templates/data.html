@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensor Data</title>
+    <title>Real-Time Sensor Data</title>
     <style>
         table {
             width: 100%;
@@ -20,15 +20,17 @@
     </style>
 </head>
 <body>
-    <h1>Received Sensor Data</h1>
+    <h1>Real-Time Sensor Data</h1>
 
-    <table>
+    <!-- Table for displaying sensor data -->
+    <table id="sensorDataTable">
         <thead>
             <tr>
                 <th>Sensor Data</th>
             </tr>
         </thead>
         <tbody>
+            <!-- This will be dynamically populated with JavaScript -->
             {% for data in sensor_data_list %}
             <tr>
                 <td>{{ data }}</td>
@@ -38,7 +40,29 @@
     </table>
 
     <br>
-    <h2>Sensor Data Received:</h2>
-    <pre>{{ sensor_data_list }}</pre> <!-- Show the raw data list as well -->
+
+    <script>
+        // Function to fetch new sensor data and update the table
+        function fetchSensorData() {
+            fetch('/data')  // Endpoint that returns the current sensor data
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.data) {
+                        // If new data is available, update the table
+                        let newData = data.data;
+                        let table = document.getElementById('sensorDataTable').getElementsByTagName('tbody')[0];
+                        
+                        // Create a new row with the received data
+                        let newRow = table.insertRow();
+                        let cell = newRow.insertCell(0);
+                        cell.textContent = newData;
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Call the fetchSensorData function every 5 seconds (5000ms)
+        setInterval(fetchSensorData, 5000);
+    </script>
 </body>
 </html>
