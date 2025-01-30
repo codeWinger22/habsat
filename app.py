@@ -87,7 +87,7 @@ sensor_data_list = []  # Store received sensor data
 @app.route('/')
 def index():
     # Pass sensor data to HTML template
-    return render_template("data.html", sensor_data_list=sensor_data_list)
+    return render_template("index.html", sensor_data_list=sensor_data_list)
 
 @app.route('/data', methods=['POST'])
 def receive_data():
