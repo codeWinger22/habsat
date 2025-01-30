@@ -48,14 +48,26 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.data) {
-                        // If new data is available, update the table
+                        // Get the latest data
                         let newData = data.data;
                         let table = document.getElementById('sensorDataTable').getElementsByTagName('tbody')[0];
                         
-                        // Create a new row with the received data
-                        let newRow = table.insertRow();
-                        let cell = newRow.insertCell(0);
-                        cell.textContent = newData;
+                        // Check if the new data is not already in the table
+                        let existingRows = table.getElementsByTagName('tr');
+                        let isDataPresent = false;
+                        for (let row of existingRows) {
+                            if (row.cells[0].textContent === newData) {
+                                isDataPresent = true;
+                                break;
+                            }
+                        }
+
+                        // If new data is not present, add a new row
+                        if (!isDataPresent) {
+                            let newRow = table.insertRow();
+                            let cell = newRow.insertCell(0);
+                            cell.textContent = newData;
+                        }
                     }
                 })
                 .catch(error => console.error('Error fetching data:', error));
