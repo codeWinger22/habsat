@@ -53,7 +53,7 @@ def index():
     # Pass sensor data to HTML template
     return render_template("data.html", sensor_data_list=sensor_data_list)
 
-@app.route('/data', methods=['GET'])  # Use GET for retrieving data
+@app.route('/data', methods=['GET','POST'])  # Use GET for retrieving data
 def get_data():
     try:
         if sensor_data_list:
